@@ -1,0 +1,33 @@
+/* Header */
+"Audio Sharing" = "音频共享";
+"Playing on %lld devices" = "正在 %lld 台设备上播放";
+"Waiting for %@" = "正在等待“%@”";
+"Waiting for a device" = "正在等待设备";
+"Ready to share with %lld devices" = "可与 %lld 台设备共享";
+"Choose at least two devices" = "请至少选择两台设备";
+"Couldn't create the shared output." = "无法创建共享输出。";
+
+/* Devices */
+"Devices" = "设备";
+"Not Connected" = "未连接";
+"Connecting…" = "正在连接…";
+"Couldn't Connect" = "无法连接";
+"Volume" = "音量";
+
+/* Nearby devices */
+"Nearby Devices" = "附近的设备";
+"Search for Devices" = "搜索设备";
+"Search Again" = "重新搜索";
+"Click to Pair" = "点按以配对";
+"Pairing…" = "正在配对…";
+"Put headphones in pairing mode. For AirPods, hold the button on the case." = "请将耳机置于配对模式。对于 AirPods，请按住充电盒上的按钮。";
+
+/* Permission */
+"Bluetooth Access Needed" = "需要蓝牙访问权限";
+"Allow AudioShare in Privacy & Security." = "请在“隐私与安全性”中允许 AudioShare。";
+
+/* Footer */
+"Open at Login" = "登录时打开";
+"Sound Settings…" = "声音设置…";
+"Bluetooth Settings…" = "蓝牙设置…";
+"Quit AudioShare" = "退出 AudioShare";

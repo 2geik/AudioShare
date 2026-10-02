@@ -4,11 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-		<string>tr</string>
-	</array>
 	<key>CFBundleDisplayName</key>
 	<string>AudioShare</string>
 	<key>CFBundleExecutable</key>
@@ -19,6 +14,17 @@
 	<string>io.github.2geik.AudioShare</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>de</string>
+		<string>es</string>
+		<string>fr</string>
+		<string>ja</string>
+		<string>pt-BR</string>
+		<string>tr</string>
+		<string>zh-Hans</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>AudioShare</string>
 	<key>CFBundlePackageType</key>

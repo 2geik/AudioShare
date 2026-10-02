@@ -77,7 +77,10 @@ struct MenuContentView: View {
             let names = controller.waitingFor.compactMap { key in
                 controller.devices.first { $0.id == key }?.name
             }
-            return names.isEmpty ? "Waiting for a device" : "Waiting for \(names.formatted(.list(type: .and)))"
+            // Join names in the language the menu is shown in ("A and B", "A ve B"), not the region's.
+            let language = Locale(identifier: Bundle.main.preferredLocalizations.first ?? "en")
+            let list = names.formatted(.list(type: .and).locale(language))
+            return names.isEmpty ? "Waiting for a device" : "Waiting for \(list)"
         } else if controller.isSharing {
             return "Playing on \(count) devices"
         } else if count >= 2 {

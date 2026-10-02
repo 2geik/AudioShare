@@ -1,0 +1,33 @@
+/* Header */
+"Audio Sharing" = "オーディオ共有";
+"Playing on %lld devices" = "%lld台のデバイスで再生中";
+"Waiting for %@" = "%@を待っています";
+"Waiting for a device" = "デバイスを待っています";
+"Ready to share with %lld devices" = "%lld台のデバイスで共有できます";
+"Choose at least two devices" = "2台以上のデバイスを選択してください";
+"Couldn't create the shared output." = "共有出力を作成できませんでした。";
+
+/* Devices */
+"Devices" = "デバイス";
+"Not Connected" = "未接続";
+"Connecting…" = "接続中…";
+"Couldn't Connect" = "接続できませんでした";
+"Volume" = "音量";
+
+/* Nearby devices */
+"Nearby Devices" = "近くのデバイス";
+"Search for Devices" = "デバイスを検索";
+"Search Again" = "再検索";
+"Click to Pair" = "クリックしてペアリング";
+"Pairing…" = "ペアリング中…";
+"Put headphones in pairing mode. For AirPods, hold the button on the case." = "ヘッドフォンをペアリングモードにしてください。AirPodsの場合は、ケースのボタンを長押しします。";
+
+/* Permission */
+"Bluetooth Access Needed" = "Bluetoothへのアクセスが必要です";
+"Allow AudioShare in Privacy & Security." = "「プライバシーとセキュリティ」でAudioShareを許可してください。";
+
+/* Footer */
+"Open at Login" = "ログイン時に開く";
+"Sound Settings…" = "サウンド設定…";
+"Bluetooth Settings…" = "Bluetooth設定…";
+"Quit AudioShare" = "AudioShareを終了";

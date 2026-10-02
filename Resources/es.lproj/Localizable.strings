@@ -1,0 +1,33 @@
+/* Header */
+"Audio Sharing" = "Compartir audio";
+"Playing on %lld devices" = "Reproduciendo en %lld dispositivos";
+"Waiting for %@" = "Esperando a %@";
+"Waiting for a device" = "Esperando un dispositivo";
+"Ready to share with %lld devices" = "Listo para compartir con %lld dispositivos";
+"Choose at least two devices" = "Elige al menos dos dispositivos";
+"Couldn't create the shared output." = "No se pudo crear la salida compartida.";
+
+/* Devices */
+"Devices" = "Dispositivos";
+"Not Connected" = "No conectado";
+"Connecting…" = "Conectando…";
+"Couldn't Connect" = "No se pudo conectar";
+"Volume" = "Volumen";
+
+/* Nearby devices */
+"Nearby Devices" = "Dispositivos cercanos";
+"Search for Devices" = "Buscar dispositivos";
+"Search Again" = "Volver a buscar";
+"Click to Pair" = "Haz clic para enlazar";
+"Pairing…" = "Enlazando…";
+"Put headphones in pairing mode. For AirPods, hold the button on the case." = "Pon los auriculares en modo de enlace. En los AirPods, mantén pulsado el botón del estuche.";
+
+/* Permission */
+"Bluetooth Access Needed" = "Se necesita acceso a Bluetooth";
+"Allow AudioShare in Privacy & Security." = "Permite AudioShare en Privacidad y seguridad.";
+
+/* Footer */
+"Open at Login" = "Abrir al iniciar sesión";
+"Sound Settings…" = "Ajustes de sonido…";
+"Bluetooth Settings…" = "Ajustes de Bluetooth…";
+"Quit AudioShare" = "Salir de AudioShare";
