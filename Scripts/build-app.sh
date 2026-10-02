@@ -13,6 +13,13 @@ rm -rf "$app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp "$binary" "$app/Contents/MacOS/AudioShare"
 cp Resources/Info.plist "$app/Contents/Info.plist"
+
+# With the Command Line Tools, SwiftPM's Swift Build engine records the deployment target as the
+# SDK version (e.g. "sdk 14.0"). AppKit picks the app's look from that field, so the app would be
+# drawn in the pre-Liquid Glass style. Write back the SDK it was really built against.
+min_os=$(/usr/libexec/PlistBuddy -c "Print :LSMinimumSystemVersion" Resources/Info.plist)
+vtool -set-build-version macos "$min_os" "$(xcrun --show-sdk-version)" -replace \
+    -output "$app/Contents/MacOS/AudioShare" "$app/Contents/MacOS/AudioShare"
 cp Resources/AppIcon.icns Resources/*.png "$app/Contents/Resources/"
 cp -R Resources/*.lproj "$app/Contents/Resources/"
 

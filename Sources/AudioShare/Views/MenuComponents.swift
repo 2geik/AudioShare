@@ -9,8 +9,9 @@ enum MenuMetrics {
     static let iconSize: CGFloat = 26
     static let iconSpacing: CGFloat = 8
 
+    /// Liquid Glass panels are much rounder; keep the hover highlight concentric with them.
     static var highlightRadius: CGFloat {
-        if #available(macOS 26, *) { 8 } else { 5 }
+        if #available(macOS 26, *) { 10 } else { 5 }
     }
 }
 

@@ -85,6 +85,7 @@ Sources/AudioShare/
 
 - Proje Swift Package olarak kurulu. `Scripts/build-app.sh` bundan `.app` paketini üretir, Xcode gerekmez.
 - macOS 27 SDK'sında `@State` bir makro ve bu makronun eklentisi yalnızca Xcode ile geliyor. Command Line Tools ile derlenebilmesi için `MenuRowModifier` içinde `State(initialValue:)` açıkça yazıldı.
+- Command Line Tools ile derlerken SwiftPM'in varsayılan motoru (Swift Build), binary'ye SDK sürümü olarak minimum hedefi (`sdk 14.0`) yazıyor. AppKit, Liquid Glass görünümünü bu alana bakarak açtığı için `build-app.sh`, `vtool` ile gerçek SDK sürümünü geri yazıyor.
 - İkonlar `Design/` klasöründeki SVG dosyalarından `Scripts/render-svg.swift` ile (AppKit'in yerleşik SVG desteği kullanılarak) üretilir.
 
 ## Lisans
