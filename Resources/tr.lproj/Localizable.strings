@@ -1,6 +1,8 @@
 /* Header */
 "Audio Sharing" = "Ses Paylaşımı";
 "Playing on %lld devices" = "%lld aygıtta çalıyor";
+"Waiting for %@" = "%@ bekleniyor";
+"Waiting for a device" = "Bir aygıt bekleniyor";
 "Ready to share with %lld devices" = "%lld aygıtla paylaşmaya hazır";
 "Choose at least two devices" = "En az iki aygıt seçin";
 "Couldn't create the shared output." = "Paylaşılan çıkış oluşturulamadı.";

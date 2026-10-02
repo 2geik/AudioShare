@@ -73,6 +73,11 @@ struct MenuContentView: View {
         let count = controller.selectedOutputs.count
         if let error = controller.errorMessage {
             return "\(error)"
+        } else if controller.isSharing, !controller.waitingFor.isEmpty {
+            let names = controller.waitingFor.compactMap { key in
+                controller.devices.first { $0.id == key }?.name
+            }
+            return names.isEmpty ? "Waiting for a device" : "Waiting for \(names.formatted(.list(type: .and)))"
         } else if controller.isSharing {
             return "Playing on \(count) devices"
         } else if count >= 2 {

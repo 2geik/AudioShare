@@ -7,7 +7,10 @@ import Observation
 final class AudioShareController {
     private(set) var outputs: [AudioOutput] = []
     private(set) var paired: [BluetoothAudioDevice] = []
+    /// The user wants sharing on. While waiting for a device that dropped out, audio plays on the rest.
     private(set) var isSharing = false
+    /// Device keys that were sharing and dropped out; they rejoin automatically when they're back.
+    private(set) var waitingFor: [String] = []
     private(set) var volumes: [String: Float] = [:]
     private(set) var launchAtLogin = LaunchAtLogin.isEnabled
     private(set) var errorMessage: String?
@@ -23,7 +26,13 @@ final class AudioShareController {
 
     @ObservationIgnored private let defaults = UserDefaults.standard
     @ObservationIgnored private var aggregateID: AudioDeviceID?
+    /// The device we made the system output: the multi-output device, or the last one left while waiting.
+    @ObservationIgnored private var routedOutputID: AudioDeviceID?
+    /// Core Audio UIDs currently playing.
     @ObservationIgnored private var memberUIDs: [String] = []
+    /// Every device that has played during this share, so a dropout can be told apart from a deselection.
+    @ObservationIgnored private var sessionKeys: Set<String> = []
+    @ObservationIgnored private let volumeKeys = VolumeKeyMonitor()
     /// The output to return to when sharing ends. Persisted so a crash can be undone on next launch.
     @ObservationIgnored private var previousOutputUID: String? {
         didSet { defaults.set(previousOutputUID, forKey: Keys.previousOutput) }
@@ -55,6 +64,7 @@ final class AudioShareController {
         }
         MultiOutputDevice.destroyExisting()
         AudioSystem.observeChanges { [weak self] in self?.refresh() }
+        volumeKeys.start { [weak self] key, isFine in self?.handleVolumeKey(key, isFine: isFine) }
         refresh()
     }
 
@@ -105,6 +115,7 @@ final class AudioShareController {
         if device.isAvailable {
             if isSelected(device) {
                 selection.removeAll { $0 == device.id }
+                sessionKeys.remove(device.id)
             } else {
                 select(device.id)
             }
@@ -154,7 +165,10 @@ final class AudioShareController {
         self.volumes = volumes
 
         // Someone picked another output in the Sound menu or System Settings: step aside.
-        if isSharing, !isSwitchingOutput, let aggregateID, AudioSystem.defaultOutput != aggregateID {
+        // A member coming or going can move the system output too, so leave that to syncSharing().
+        let membershipChanged = Set(selectedOutputs.map(\.uid)) != Set(memberUIDs)
+        if isSharing, !isSwitchingOutput, !membershipChanged,
+           let routedOutputID, AudioSystem.defaultOutput != routedOutputID {
             stopSharing(restoreOutput: false)
         }
         syncSharing()
@@ -176,8 +190,11 @@ final class AudioShareController {
         guard isSharing else { return MultiOutputDevice.destroyExisting() }
         let remaining = selectedOutputs
         isSharing = false
-        aggregateID = nil
+        waitingFor = []
+        sessionKeys = []
         memberUIDs = []
+        aggregateID = nil
+        routedOutputID = nil
         isSwitchingOutput = false
         if restoreOutput {
             // Hand the output back before removing ours, so macOS doesn't pick one at random.
@@ -189,41 +206,93 @@ final class AudioShareController {
         MultiOutputDevice.destroyExisting()
     }
 
-    /// Keeps the multi-output device in step with the selection and with what's actually connected.
+    /// Keeps the system output in step with the selection and with what's actually connected.
     private func syncSharing() {
         guard isSharing else { return }
         let members = selectedOutputs
-        guard members.count >= 2 else {
-            // Down to one device: just play there, like iOS does when the other AirPods leave.
+        let memberKeys = Set(members.map(OutputDevice.key(for:)))
+        let dropped = selection.filter { sessionKeys.contains($0) && !memberKeys.contains($0) }
+
+        if members.count >= 2 {
+            waitingFor = []
+            playOnAll(members)
+        } else if let last = members.first, !dropped.isEmpty {
+            // Like iOS when the other AirPods go back in their case, except the share resumes
+            // by itself once they reconnect.
+            waitingFor = dropped
+            playOnly(last)
+        } else {
+            // Down to one device by choice: just play there.
             if let last = members.first {
                 previousOutputUID = last.uid
             }
-            return stopSharing()
+            stopSharing()
         }
-        guard members.map(\.uid) != memberUIDs else { return }
+    }
 
+    private func playOnAll(_ members: [AudioOutput]) {
+        guard aggregateID == nil || members.map(\.uid) != memberUIDs else { return }
         do {
             let id = try MultiOutputDevice.create(members: members)
             aggregateID = id
             memberUIDs = members.map(\.uid)
-            makeDefaultOutput(id)
+            sessionKeys.formUnion(members.map(OutputDevice.key(for:)))
+            route(to: id)
         } catch {
             errorMessage = String(localized: "Couldn't create the shared output.")
             stopSharing()
         }
     }
 
-    /// A freshly created aggregate can take a moment before the HAL accepts it as the default.
-    private func makeDefaultOutput(_ id: AudioDeviceID) {
+    private func playOnly(_ output: AudioOutput) {
+        guard routedOutputID != output.id else { return }
+        memberUIDs = [output.uid]
+        route(to: output.id)
+        if aggregateID != nil {
+            aggregateID = nil
+            MultiOutputDevice.destroyExisting()
+        }
+    }
+
+    /// A freshly created multi-output device can take a moment before the HAL accepts it as the default.
+    private func route(to id: AudioDeviceID) {
+        routedOutputID = id
+        if AudioSystem.setDefaultOutput(id), AudioSystem.defaultOutput == id { return }
         isSwitchingOutput = true
         Task {
             for _ in 0..<20 {
-                if AudioSystem.setDefaultOutput(id), AudioSystem.defaultOutput == id { break }
                 try? await Task.sleep(for: .milliseconds(50))
+                if AudioSystem.setDefaultOutput(id), AudioSystem.defaultOutput == id { break }
             }
-            if aggregateID == id {
+            if routedOutputID == id {
                 isSwitchingOutput = false
             }
+        }
+    }
+
+    // MARK: Volume keys
+
+    /// macOS can't change the volume of a multi-output device, so apply the keys to every member,
+    /// keeping their balance. When only one device is left, macOS handles the keys itself.
+    private func handleVolumeKey(_ key: VolumeKeyMonitor.Key, isFine: Bool) {
+        guard let aggregateID, routedOutputID == aggregateID, AudioSystem.defaultOutput == aggregateID else { return }
+        let members = selectedOutputs.filter { memberUIDs.contains($0.uid) }
+        let step: Float = isFine ? 1 / 64 : 1 / 16
+        switch key {
+        case .up, .down:
+            for member in members {
+                let current = AudioSystem.volume(member.id) ?? 0
+                AudioSystem.setVolume(member.id, current + (key == .up ? step : -step))
+                if key == .up {
+                    AudioSystem.setMuted(member.id, false)
+                }
+            }
+        case .mute:
+            let mute = !members.allSatisfy { AudioSystem.isMuted($0.id) }
+            members.forEach { AudioSystem.setMuted($0.id, mute) }
+        }
+        for member in members {
+            volumes[OutputDevice.key(for: member)] = AudioSystem.volume(member.id)
         }
     }
 

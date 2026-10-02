@@ -77,23 +77,23 @@ enum AudioSystem {
 
     // MARK: Volume
 
-    /// Some devices expose volume on the main element, others (AirPods) only per channel.
-    private static func volumeElements(_ id: AudioDeviceID) -> [AudioObjectPropertyElement] {
-        if isVolumeSettable(id, element: kAudioObjectPropertyElementMain) {
+    /// Some devices expose volume and mute on the main element, others (AirPods) only per channel.
+    private static func outputElements(_ id: AudioDeviceID, _ selector: AudioObjectPropertySelector) -> [AudioObjectPropertyElement] {
+        if isSettable(id, selector, element: kAudioObjectPropertyElementMain) {
             return [kAudioObjectPropertyElementMain]
         }
-        return [1, 2].filter { isVolumeSettable(id, element: $0) }
+        return [1, 2].filter { isSettable(id, selector, element: $0) }
     }
 
-    private static func isVolumeSettable(_ id: AudioDeviceID, element: AudioObjectPropertyElement) -> Bool {
-        var address = Self.address(kAudioDevicePropertyVolumeScalar, scope: kAudioObjectPropertyScopeOutput, element: element)
+    private static func isSettable(_ id: AudioDeviceID, _ selector: AudioObjectPropertySelector, element: AudioObjectPropertyElement) -> Bool {
+        var address = Self.address(selector, scope: kAudioObjectPropertyScopeOutput, element: element)
         guard AudioObjectHasProperty(id, &address) else { return false }
         var settable: DarwinBoolean = false
         return AudioObjectIsPropertySettable(id, &address, &settable) == noErr && settable.boolValue
     }
 
     static func volume(_ id: AudioDeviceID) -> Float? {
-        let values = volumeElements(id).compactMap { element -> Float? in
+        let values = outputElements(id, kAudioDevicePropertyVolumeScalar).compactMap { element -> Float? in
             var address = Self.address(kAudioDevicePropertyVolumeScalar, scope: kAudioObjectPropertyScopeOutput, element: element)
             var value: Float32 = 0
             var size = UInt32(MemoryLayout<Float32>.size)
@@ -105,9 +105,26 @@ enum AudioSystem {
 
     static func setVolume(_ id: AudioDeviceID, _ volume: Float) {
         var value = Float32(min(max(volume, 0), 1))
-        for element in volumeElements(id) {
+        for element in outputElements(id, kAudioDevicePropertyVolumeScalar) {
             var address = Self.address(kAudioDevicePropertyVolumeScalar, scope: kAudioObjectPropertyScopeOutput, element: element)
             AudioObjectSetPropertyData(id, &address, 0, nil, UInt32(MemoryLayout<Float32>.size), &value)
+        }
+    }
+
+    static func isMuted(_ id: AudioDeviceID) -> Bool {
+        outputElements(id, kAudioDevicePropertyMute).contains { element in
+            var address = Self.address(kAudioDevicePropertyMute, scope: kAudioObjectPropertyScopeOutput, element: element)
+            var value: UInt32 = 0
+            var size = UInt32(MemoryLayout<UInt32>.size)
+            return AudioObjectGetPropertyData(id, &address, 0, nil, &size, &value) == noErr && value != 0
+        }
+    }
+
+    static func setMuted(_ id: AudioDeviceID, _ muted: Bool) {
+        var value: UInt32 = muted ? 1 : 0
+        for element in outputElements(id, kAudioDevicePropertyMute) {
+            var address = Self.address(kAudioDevicePropertyMute, scope: kAudioObjectPropertyScopeOutput, element: element)
+            AudioObjectSetPropertyData(id, &address, 0, nil, UInt32(MemoryLayout<UInt32>.size), &value)
         }
     }
 
