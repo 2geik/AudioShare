@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="18" viewBox="0 0 440 360">
+  <!--
+    Menu bar template glyph (idle). Drawn on a 22×18 pt grid, scaled ×20 so the mask stays crisp.
+    Only the alpha channel matters; macOS tints template images itself.
+  -->
+  <defs>
+    <path id="band" d="M1.25 6.5 V5.5 A4.25 4.25 0 0 1 9.75 5.5 V6.5" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+    <rect id="leftCup" x="0" y="5.75" width="3" height="5.25" rx="1.4"/>
+    <rect id="rightCup" x="8" y="5.75" width="3" height="5.25" rx="1.4"/>
+
+    <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="440" height="360">
+      <rect width="440" height="360" fill="#FFFFFF"/>
+      <g transform="scale(20) translate(2 6)" stroke="#000000" fill="#000000" stroke-linejoin="round">
+        <use xlink:href="#band" stroke-width="3.2"/>
+        <use xlink:href="#leftCup" stroke-width="1.7"/>
+        <use xlink:href="#rightCup" stroke-width="1.7"/>
+      </g>
+    </mask>
+  </defs>
+
+  <g mask="url(#behind)">
+    <g transform="scale(20) translate(9 1)" fill="#000000" stroke="#000000">
+      <use xlink:href="#band"/>
+      <use xlink:href="#rightCup" stroke="none"/>
+    </g>
+  </g>
+  <g transform="scale(20) translate(2 6)" fill="#000000" stroke="#000000">
+    <use xlink:href="#band"/>
+    <use xlink:href="#leftCup" stroke="none"/>
+    <use xlink:href="#rightCup" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    AudioShare app icon: one pair of headphones in front of another.
+    Glyph geometry is drawn on a 22×18 grid (same as the menu bar icon) and scaled ×32.
+    Masks are defined in canvas space because CoreSVG rasterizes them at user-space resolution.
+  -->
+  <defs>
+    <linearGradient id="background" x1="300" y1="100" x2="724" y2="924" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4DB0FF"/>
+      <stop offset="0.55" stop-color="#4B6BF5"/>
+      <stop offset="1" stop-color="#6A3BE0"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="100" x2="0" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="squircle">
+      <rect x="100" y="100" width="824" height="824" rx="185" ry="185"/>
+    </clipPath>
+
+    <path id="band" d="M1.25 6.5 V5.5 A4.25 4.25 0 0 1 9.75 5.5 V6.5" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+    <rect id="leftCup" x="0" y="5.75" width="3" height="5.25" rx="1.4"/>
+    <rect id="rightCup" x="8" y="5.75" width="3" height="5.25" rx="1.4"/>
+
+    <!-- Cuts the front pair, plus a small gap, out of the pair behind it. -->
+    <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="#FFFFFF"/>
+      <g transform="translate(160 216) scale(32) translate(2 6)" stroke="#000000" fill="#000000" stroke-width="3.2" stroke-linejoin="round">
+        <use xlink:href="#band" stroke-width="3.2"/>
+        <use xlink:href="#leftCup"/>
+        <use xlink:href="#rightCup"/>
+      </g>
+    </mask>
+  </defs>
+
+  <!-- Soft drop shadow -->
+  <rect x="96" y="112" width="832" height="832" rx="190" fill="#000000" fill-opacity="0.05"/>
+  <rect x="98" y="108" width="828" height="828" rx="188" fill="#000000" fill-opacity="0.07"/>
+  <rect x="100" y="104" width="824" height="824" rx="186" fill="#000000" fill-opacity="0.10"/>
+
+  <g clip-path="url(#squircle)">
+    <rect x="100" y="100" width="824" height="824" fill="url(#background)"/>
+    <rect x="100" y="100" width="824" height="420" fill="url(#sheen)"/>
+  </g>
+  <rect x="101.5" y="101.5" width="821" height="821" rx="184" fill="none" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="3"/>
+
+  <!-- Back pair (its left cup is fully hidden, so it's left out) -->
+  <g mask="url(#behind)">
+    <g transform="translate(160 216) scale(32) translate(9 1)" fill="#FFFFFF" stroke="#FFFFFF" opacity="0.6">
+      <use xlink:href="#band"/>
+      <use xlink:href="#rightCup" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- Front pair -->
+  <g transform="translate(160 216) scale(32) translate(2 6)" fill="#FFFFFF" stroke="#FFFFFF">
+    <use xlink:href="#band"/>
+    <use xlink:href="#leftCup" stroke="none"/>
+    <use xlink:href="#rightCup" stroke="none"/>
+  </g>
+</svg>

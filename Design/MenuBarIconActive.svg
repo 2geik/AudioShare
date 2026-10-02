@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="18" viewBox="0 0 440 360">
+  <!-- Menu bar template glyph (sharing): the idle glyph knocked out of a filled badge. -->
+  <defs>
+    <path id="band" d="M1.25 6.5 V5.5 A4.25 4.25 0 0 1 9.75 5.5 V6.5" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+    <rect id="leftCup" x="0" y="5.75" width="3" height="5.25" rx="1.4"/>
+    <rect id="rightCup" x="8" y="5.75" width="3" height="5.25" rx="1.4"/>
+
+    <mask id="glyph" maskUnits="userSpaceOnUse" x="0" y="0" width="440" height="360">
+      <rect width="440" height="360" fill="#FFFFFF"/>
+      <g transform="scale(20) translate(11 9) scale(0.78) translate(-11 -9.25)">
+        <g transform="translate(9 1)" fill="#000000" stroke="#000000">
+          <use xlink:href="#band"/>
+          <use xlink:href="#rightCup" stroke="none"/>
+        </g>
+        <g transform="translate(2 6)" fill="#FFFFFF" stroke="#FFFFFF" stroke-linejoin="round">
+          <use xlink:href="#band" stroke-width="3.2"/>
+          <use xlink:href="#leftCup" stroke-width="1.7"/>
+          <use xlink:href="#rightCup" stroke-width="1.7"/>
+        </g>
+        <g transform="translate(2 6)" fill="#000000" stroke="#000000">
+          <use xlink:href="#band"/>
+          <use xlink:href="#leftCup" stroke="none"/>
+          <use xlink:href="#rightCup" stroke="none"/>
+        </g>
+      </g>
+    </mask>
+  </defs>
+
+  <rect x="10" y="0" width="420" height="360" rx="90" fill="#000000" mask="url(#glyph)"/>
+</svg>

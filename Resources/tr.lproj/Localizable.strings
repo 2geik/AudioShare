@@ -1,0 +1,31 @@
+/* Header */
+"Audio Sharing" = "Ses Paylaşımı";
+"Playing on %lld devices" = "%lld aygıtta çalıyor";
+"Ready to share with %lld devices" = "%lld aygıtla paylaşmaya hazır";
+"Choose at least two devices" = "En az iki aygıt seçin";
+"Couldn't create the shared output." = "Paylaşılan çıkış oluşturulamadı.";
+
+/* Devices */
+"Devices" = "Aygıtlar";
+"Not Connected" = "Bağlı Değil";
+"Connecting…" = "Bağlanıyor…";
+"Couldn't Connect" = "Bağlanamadı";
+"Volume" = "Ses Düzeyi";
+
+/* Nearby devices */
+"Nearby Devices" = "Yakındaki Aygıtlar";
+"Search for Devices" = "Aygıt Ara";
+"Search Again" = "Yeniden Ara";
+"Click to Pair" = "Eşleştirmek için tıklayın";
+"Pairing…" = "Eşleştiriliyor…";
+"Put headphones in pairing mode. For AirPods, hold the button on the case." = "Kulaklığı eşleştirme moduna alın. AirPods için kutudaki düğmeyi basılı tutun.";
+
+/* Permission */
+"Bluetooth Access Needed" = "Bluetooth İzni Gerekli";
+"Allow AudioShare in Privacy & Security." = "Gizlilik ve Güvenlik'te AudioShare'e izin verin.";
+
+/* Footer */
+"Open at Login" = "Girişte Aç";
+"Sound Settings…" = "Ses Ayarları…";
+"Bluetooth Settings…" = "Bluetooth Ayarları…";
+"Quit AudioShare" = "AudioShare'den Çık";
