@@ -27,6 +27,7 @@ Paylaşımı kapattığında ses, önceki çıkışına geri döner.
 - **Bağlı olmayan cihazlar:** Daha önce eşleştirilmiş ama şu an bağlı olmayan Bluetooth cihazları da listede yer alır. Tıklayınca bağlanır ve paylaşıma katılır.
 - **Hiç eşleşmemiş cihazlar:** **Yakındaki Aygıtlar → Aygıt Ara** ile eşleştirme modundaki kulaklıklar bulunur, tek tıkla eşleştirilip bağlanır. Arkadaşının AirPods'u için kutunun arkasındaki düğmeyi basılı tutması yeterli.
 - **Cihaz başına ses ayarı:** Seçili her cihazın altında kendi ses kaydırıcısı bulunur.
+- **Ses tuşları:** Paylaşım açıkken klavyedeki ses tuşları, paylaşımdaki tüm cihazların sesini aralarındaki dengeyi koruyarak birlikte açar ve kısar. Sessiz tuşu ve ⌥⇧ ile ince ayar da çalışır. İzin gerektirmez.
 - **Otomatik devam:** Paylaşımdaki bir kulaklığın bağlantısı koparsa (ör. kutusuna konursa) ses diğer cihazlarda çalmaya devam eder ve panelde "… bekleniyor" yazar. Kulaklık geri bağlanınca paylaşım kendiliğinden yeniden başlar. Bir cihazı panelden kendin kaldırırsan ses kalan cihaza geçer. Seçimlerin hatırlanır. Sistem ayarlarından başka bir çıkış seçersen paylaşım kapanır.
 - **Native görünüm:** Arayüz macOS'in Bluetooth ve Ses menüleriyle aynı yapıda; açık ve koyu modu destekler.
 - **Türkçe ve İngilizce:** Dil, sistem diline göre seçilir.
@@ -76,7 +77,7 @@ Sources/AudioShare/
 ## Bilinen sınırlamalar
 
 - **Gecikme farkı:** Bluetooth kulaklıklar kablolu ya da dahili hoparlörlerden yaklaşık 150–250 ms geç çalar ve çoklu çıkış cihazı bunu telafi etmez. İki Bluetooth kulaklık birbirine yakın gecikmeyle çalar, bu yüzden asıl kullanım senaryosu (iki kulaklık) sorunsuzdur.
-- **Sistem ses ayarı:** macOS, çoklu çıkış cihazlarında genel ses ayarını desteklemez. Paylaşım açıkken Kontrol Merkezi'ndeki ve menü çubuğundaki ses kaydırıcısı pasif kalır, bunun yerine paneldeki kaydırıcıları kullan. Bunu tamamen çözmek için sanal bir ses sürücüsü ya da "sistem sesi kaydı" izni gerekir, AudioShare bilerek ikisini de kullanmaz.
+- **Sistem ses ayarı:** macOS, çoklu çıkış cihazlarında genel ses ayarını desteklemez. Paylaşım açıkken Kontrol Merkezi'ndeki ve menü çubuğundaki ses kaydırıcısı pasif kalır, bunun yerine klavyedeki ses tuşlarını ya da paneldeki kaydırıcıları kullan. Bunu tamamen çözmek için sanal bir ses sürücüsü ya da "sistem sesi kaydı" izni gerekir, AudioShare bilerek ikisini de kullanmaz.
 - **Mikrofon:** Paylaşımdaki bir AirPods'un mikrofonu kullanılırsa (ör. arama sırasında) Bluetooth bağlantısı düşük kaliteli moda geçer.
 - **İmza:** Uygulama ad-hoc imzalıdır. Her yeniden derlemeden sonra macOS Bluetooth iznini tekrar sorabilir. Başka bir Mac'e kopyalarsan ilk açılışta *sağ tık → Aç* gerekebilir.
 - Bluetooth LE Audio'ya özel (klasik Bluetooth desteklemeyen) cihazlar taramada görünmez. Sistem ayarlarından eşleştirildiklerinde listeye gelirler.
